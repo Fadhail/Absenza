@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script src="js\jquery.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            setInterval(function(){
+                $("#cekkartu").load('bacakartu.php')
+            },0 );
+        });
+    </script>
 </head>
 <body>
     <!-- Sidebar -->
@@ -15,7 +24,9 @@
     <!-- Content -->
     <div class="p-4 sm:ml-64">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-            <h1>INI SCAN</h1>
+            <div class="container-fluid">
+                <div id="cekkartu"></div>
+            </div>
         </div>
     </div>
 </body>
