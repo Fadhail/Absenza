@@ -1,32 +1,25 @@
 <?php
-    include "koneksi\koneksi_DB.php";
-    if(isset($_POST['btnSimpan'])) 
-    {
-        $nokartu = $_POST['nokartu'];
-        $nisn    = $_POST['nisn'];
-        $nama    = $_POST['nama'];
-        $kelas   = $_POST['kelas'];
-        $simpan  = mysqli_query($koneksi, "insert into db_siswa(nokartu, nisn, nama, kelas)values('$nokartu', '$nisn', '$nama', '$kelas')");
+include "koneksi.php";
 
-        if($simpan)
-        {
-            echo "
-                alert('Tersimpan');
-                location.replace('siswa.php');
-            ";
-        }
-        else
-        {
-            echo "
-                <script>
-                    alert('Gagal Tersimpan');
-                    location.replace('siswa.php');
-                </script>
-            ";  
-        }
+if(isset($_POST['btnSimpan'])) {
+    $nokartu = $_POST['nokartu'];
+    $nisn    = $_POST['nisn'];
+    $nama    = $_POST['nama'];
+    $kelas   = $_POST['kelas'];
 
-    }
+    $stmt = $koneksi->prepare("INSERT INTO db_siswa (nokartu, nisn, nama, kelas) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $nokartu, $nisn, $nama, $kelas);
+    $result = $stmt->execute();
     
+    if($result) {
+        echo "<script>alert('Data siswa berhasil disimpan');window.location.replace('siswa.php');</script>";
+    } else {
+        echo "<script>alert('Gagal menyimpan data siswa');</script>";
+    }
+
+    $stmt->close();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -46,25 +39,24 @@
             <h3><b>Tambah Data Siswa</b></h3>
             <form method="POST">
                 <div>
-                    <label>No.Kartu</label>
-                    <input type="text" name="nokartu" id="nokartu" placeholder="Nomor Kartu RFID" class="form-control">
+                    <label class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">No.Kartu</label>
+                    <input type="text" name="nokartu" id="nokartu" placeholder="Nomor Kartu RFID" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                 </div>
                 <div>
-                    <label>NISN</label>
-                    <input type="text" name="nisn" id="nisn" placeholder="NISN" class="form-control">
+                    <label class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">NISN</label>
+                    <input type="text" name="nisn" id="nisn" placeholder="NISN" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                 </div>
                 <div>
-                    <label>Nama</label>
-                    <input type="text" name="nama" id="nama" placeholder="Nama Siswa" class="form-control">
+                    <label class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                    <input type="text" name="nama" id="nama" placeholder="Nama Siswa" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                 </div>
                 <div>
-                    <label>Kelas</label>
-                    <input type="text" name="kelas" id="kelas" placeholder="Kelas" class="form-control">
+                    <label class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kelas</label>
+                    <input type="text" name="kelas" id="kelas" placeholder="Kelas" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                 </div>
-                <button name="btnSimpan" id="btnSimpan">Simpan</button>
+                <button type="submit" name="btnSimpan" id="btnSimpan" class="mt-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
             </form>
         </div>
     </div>
 </body>
 </html>
-   
