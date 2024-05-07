@@ -12,5 +12,6 @@
 <?php
 include 'components/sidebar.php';
 ?>
+<?php include 'components/table.php';?>
 </body>
 </html>
