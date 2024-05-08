@@ -55,6 +55,12 @@ $nokartu = isset($data_kartu['nokartu']) ? $data_kartu['nokartu'] : "";
                 echo "<h1 class='text-3xl font-bold mt-8'>SELAMAT DATANG <br> $nama</h1>";
                 mysqli_query($koneksi, "INSERT INTO rekapitulasi (nokartu, tanggal, jam_masuk) VALUES ('$nokartu', '$tanggal', '$jam')");
             } else {
+                // coba
+                if ($mode_absen == 1) {
+                    echo "<h1 class='text-3xl font-bold mt-8'>SELAMAT DATANG KEMBALI <br> $nama</h1>";
+                    mysqli_query($koneksi, "UPDATE rekapitulasi SET jam_masuk = '$jam' WHERE nokartu = '$nokartu' AND tanggal = '$tanggal'");
+                }
+
                 // Update sesuai pilihan mode
                 if ($mode_absen == 2) {
                     echo "<h1 class='text-3xl font-bold mt-8'>SELAMAT PULANG <br> $nama</h1>";
