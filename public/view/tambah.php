@@ -31,7 +31,7 @@ if(isset($_POST['btnSimpan'])) {
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="js\jquery.js"></script>
+    <script src="../js/jquery.js"></script>
 
     <!-- pembacaan rfid otomatis -->
     <script type="text/javascript">

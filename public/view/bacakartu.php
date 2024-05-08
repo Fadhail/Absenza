@@ -23,7 +23,7 @@
         if($nokartu == "") {
     ?>
     <h1>ABSEN : <?php echo $mode ?></h1>
-    <img src="img/rfid.png" alt="">
+    <img src="../img/rfid.png" alt="">
     <div>SILAHKAN TEMPELKAN KARTU</div>
     
     <?php } else { 
