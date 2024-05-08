@@ -1,3 +1,22 @@
+<?php
+include 'koneksi.php';
+
+// Validasi tanggal
+if (isset($_GET['tanggal'])) {
+    $tanggal = date('Y-m-d', strtotime($_GET['tanggal']));
+} else {
+    $tanggal = date('Y-m-d');
+}
+
+// Filter absensi berdasarkan tanggal
+$sql = $koneksi->prepare("SELECT b.nokartu, b.nama, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ?");
+$sql->bind_param("s", $tanggal);
+$sql->execute();
+$result = $sql->get_result();
+
+$no = 0;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,46 +60,29 @@
             </tr>
         </thead>
         <tbody>
-            <?php 
-            include 'koneksi.php';
-
-            // Validasi tanggal
-            if(isset($_GET['tanggal'])) {
-                $tanggal = date('Y-m-d', strtotime($_GET['tanggal']));
-            } else {
-                $tanggal = date('Y-m-d');
-            }
-
-            // Filter absensi berdasarkan tanggal
-            $sql = $koneksi->prepare("SELECT b.nama, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a, db_siswa b WHERE a.nokartu = b.nokartu AND a.tanggal = ?");
-            $sql->bind_param("s", $tanggal);
-            $sql->execute();
-            $result = $sql->get_result();
-
-            $no = 0;
-            while($data = $result->fetch_assoc()) {
+            <?php while ($data = $result->fetch_assoc()) {
                 $no++;
             ?>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <?php echo $no; ?> 
-                </th>
-                <td class="px-6 py-4">
-                    <?php echo $data['nokartu']; ?> 
-                </td>
-                <td class="px-6 py-4">
-                    <?php echo $data['nama']; ?> 
-                </td>
-                <td class="px-6 py-4">
-                    <?php echo $data['tanggal']; ?>
-                </td>
-                <td class="px-6 py-4">
-                    <?php echo $data['jam_masuk']; ?>
-                </td>
-                <td class="px-6 py-4">
-                    <?php echo $data['jam_pulang']; ?>
-                </td>
-            </tr>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <?php echo $no; ?>
+                    </th>
+                    <td class="px-6 py-4">
+                        <?php echo isset($data['nokartu']) ? $data['nokartu'] : ''; ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo isset($data['nama']) ? $data['nama'] : ''; ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo isset($data['tanggal']) ? $data['tanggal'] : ''; ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo isset($data['jam_masuk']) ? $data['jam_masuk'] : ''; ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo isset($data['jam_pulang']) ? $data['jam_pulang'] : ''; ?>
+                    </td>
+                </tr>
             <?php } ?>
         </tbody>
     </table>
