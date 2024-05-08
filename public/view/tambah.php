@@ -18,6 +18,9 @@ if(isset($_POST['btnSimpan'])) {
     }
 
     $stmt->close();
+
+    // Menghapus tabel RFID
+    mysqli_query($koneksi, "DELETE FROM rfid");
 }
 
 ?>

@@ -13,7 +13,7 @@
         $(document).ready(function(){
             setInterval(function(){
                 $("#cekkartu").load('bacakartu.php')
-            },10000 );
+            },2000 );
         });
     </script>
 </head>
