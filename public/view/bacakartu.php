@@ -18,9 +18,9 @@ $nokartu = isset($data_kartu['nokartu']) ? $data_kartu['nokartu'] : "";
 
     // Tentukan rentang waktu untuk absen masuk dan pulang
     $jam_masuk_min = '06:00:00';
-    $jam_masuk_max = '08:00:00';
-    $jam_keluar_min = '20:00:00';
-    $jam_keluar_max = '23:00:00';
+    $jam_masuk_max = '20:00:00';
+    $jam_keluar_min = '06:00:00';
+    $jam_keluar_max = '08:00:00';
     
     // Tampilkan heading utama
     echo "<h1 class='text-3xl font-bold mt-8 mb-4'>ABSEN : " . (($jam >= $jam_masuk_min && $jam <= $jam_masuk_max) ? 'Masuk' : (($jam >= $jam_keluar_min && $jam <= $jam_keluar_max) ? 'Pulang' : '')) . "</h1>";
@@ -56,7 +56,7 @@ $nokartu = isset($data_kartu['nokartu']) ? $data_kartu['nokartu'] : "";
                 if ($jam >= $jam_masuk_min && $jam <= $jam_masuk_max) {
                     // Rekam waktu masuk
                     echo "<h1 class='text-3xl font-bold mt-8'>SELAMAT DATANG <br> $nama</h1>";
-                    mysqli_query($koneksi, "INSERT INTO rekapitulasi (nokartu, tanggal, jam_masuk) VALUES ('$nokartu', '$tanggal', '$jam')");
+                    mysqli_query($koneksi, "INSERT INTO rekapitulasi (nokartu, nama, tanggal, jam_masuk) VALUES ('$nokartu', '$nama', '$tanggal', '$jam')");
                 } else {
                     // Tampilkan pesan jika bukan waktu absen masuk
                     echo "<h1 class='text-3xl font-bold mt-8'>BUKAN WAKTU ABSEN MASUK</h1>";
