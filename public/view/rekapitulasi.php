@@ -34,6 +34,24 @@ $no = 0;
     <!-- Content -->
     <div class="p-4 sm:ml-64">
 
+    <!-- Pilih Tanggal -->
+    <?php
+
+// Check if a date is submitted
+if (isset($_GET['tanggal'])) {
+  $selectedDate = $_GET['tanggal'];
+} else {
+  $selectedDate = ""; // Default value if no date selected
+}
+
+?>
+
+<form method="get">
+  <label for="tanggal" class="text-sm font-medium">Pilih Tanggal :</label>
+  <input type="date" name="tanggal" id="tanggal" value="<?php echo $selectedDate; ?>" class="rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+  <input type="submit" value="Filter" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500">
+</form>
+
     <!-- Table -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
