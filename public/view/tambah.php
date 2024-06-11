@@ -67,7 +67,20 @@ if(isset($_POST['btnSimpan'])) {
                 </div>
                 <div>
                     <label class="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kelas</label>
-                    <input type="text" name="kelas" id="kelas" placeholder="Kelas" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                    <select name="kelas" id="kelas" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                        <option value="">Pilih Kelas</option>
+                        <option value="7A">7A</option>
+                        <option value="7B">7B</option>
+                        <option value="7C">7C</option>
+                        <option value="7D">7D</option>
+                        <option value="7E">7E</option>
+                        <option value="7F">7F</option>
+                        <option value="7G">7G</option>
+                        <option value="7H">7H</option>
+                        <option value="7I">7I</option>
+                        <option value="7J">7J</option>
+                        <option value="7K">7K</option>
+                    </select>
                 </div>
                 <button type="submit" name="btnSimpan" id="btnSimpan" class="mt-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
             </form>

@@ -18,8 +18,8 @@ $nokartu = isset($data_kartu['nokartu']) ? $data_kartu['nokartu'] : "";
 
     // Tentukan rentang waktu untuk absen masuk dan pulang
     $jam_masuk_min = '06:00:00';
-    $jam_masuk_max = '08:00:00';
-    $jam_keluar_min = '18:00:00';
+    $jam_masuk_max = '18:00:00';
+    $jam_keluar_min = '19:00:00';
     $jam_keluar_max = '23:00:00';
     
     // Tampilkan heading utama
