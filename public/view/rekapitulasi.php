@@ -8,9 +8,15 @@ if (isset($_GET['tanggal'])) {
     $tanggal = date('Y-m-d');
 }
 
-// Filter absensi berdasarkan tanggal
-$sql = $koneksi->prepare("SELECT b.nokartu, b.nama, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ?");
-$sql->bind_param("s", $tanggal);
+// Filter absensi berdasarkan tanggal dan kelas
+if (isset($_GET['kelas']) && $_GET['kelas'] != '') {
+    $kelas = $_GET['kelas'];
+    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ? AND b.kelas = ?");
+    $sql->bind_param("ss", $tanggal, $kelas);
+} else {
+    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ?");
+    $sql->bind_param("s", $tanggal);
+}
 $sql->execute();
 $result = $sql->get_result();
 
@@ -34,23 +40,45 @@ $no = 0;
     <!-- Content -->
     <div class="p-4 sm:ml-64">
 
-    <!-- Pilih Tanggal -->
     <?php
 
-// Check if a date is submitted
-if (isset($_GET['tanggal'])) {
-  $selectedDate = $_GET['tanggal'];
-} else {
-  $selectedDate = ""; // Default value if no date selected
-}
+    // Check if a date is submitted
+    if (isset($_GET['tanggal'])) {
+      $selectedDate = $_GET['tanggal'];
+    } else {
+      $selectedDate = ""; // Default value if no date selected
+    }
 
-?>
+    // Check if a class is submitted
+    if (isset($_GET['kelas'])) {
+      $selectedClass = $_GET['kelas'];
+    } else {
+      $selectedClass = ""; // Default value if no class selected
+    }
 
-<form method="get" class="flex items-center mb-6 mt-6">
-  <label for="tanggal" class="text-sm font-medium mr-2">Pilih Tanggal :</label>
-  <input type="date" name="tanggal" id="tanggal" value="<?php echo $selectedDate; ?>" class="rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-  <button type="submit" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 ml-2">Filter</button>
-</form>
+    ?>
+
+    <form method="get" class="flex items-center mb-6 mt-6">
+        <label for="tanggal" class="text-sm font-medium mr-2">Pilih Tanggal :</label>
+        <input type="date" name="tanggal" id="tanggal" value="<?php echo $selectedDate; ?>" class="rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mr-2">
+        
+        <label for="kelas" class="text-sm font-medium mr-2">Pilih Kelas :</label>
+        <select name="kelas" id="kelas" class="rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mr-2">
+            <option value="">Semua Kelas</option>
+            <?php
+                include "koneksi.php";
+                $kelas_query = mysqli_query($koneksi, "SELECT DISTINCT kelas FROM db_siswa ORDER BY kelas");
+                while ($kelas_data = mysqli_fetch_assoc($kelas_query)) {
+                    $selected = isset($_GET['kelas']) && $_GET['kelas'] == $kelas_data['kelas'] ? 'selected' : '';
+                    echo "<option value='{$kelas_data['kelas']}' $selected>{$kelas_data['kelas']}</option>";
+                }
+            ?>
+        </select>
+        
+        <button type="submit" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 ml-2">
+            Filter
+        </button>
+    </form>
 
     <!-- Table -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -61,7 +89,7 @@ if (isset($_GET['tanggal'])) {
                     NO
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    NO KARTU
+                    NISN
                 </th>
                 <th scope="col" class="px-6 py-3">
                     NAMA
@@ -86,7 +114,7 @@ if (isset($_GET['tanggal'])) {
                         <?php echo $no; ?>
                     </th>
                     <td class="px-6 py-4">
-                        <?php echo isset($data['nokartu']) ? $data['nokartu'] : ''; ?>
+                        <?php echo isset($data['nisn']) ? $data['nisn'] : ''; ?>
                     </td>
                     <td class="px-6 py-4">
                         <?php echo isset($data['nama']) ? $data['nama'] : ''; ?>

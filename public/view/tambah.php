@@ -36,7 +36,7 @@ if(isset($_POST['btnSimpan'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="../js/jquery.js"></script>
 
-    <!-- pembacaan rfid otomatis -->
+    <!-- input pembacaan rfid -->
     <script type="text/javascript">
         $(document).ready(function(){
             setInterval(function(){

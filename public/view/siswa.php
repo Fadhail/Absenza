@@ -1,3 +1,12 @@
+<?php
+include "koneksi.php";
+
+// Mengambil data siswa dari database
+$sql = $koneksi->prepare("SELECT * FROM db_siswa");
+$sql->execute();
+$result = $sql->get_result();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,24 +70,7 @@
                 </th>
             </tr>
         </thead>
-            <?php
-                include "koneksi.php";  
-
-                // Get the selected class from the form
-                $selectedClass = isset($_GET['kelas']) ? $_GET['kelas'] : '';
-
-                // Modify the query based on the selected class
-                if ($selectedClass) {
-                    $sql = $koneksi->prepare("SELECT * FROM db_siswa WHERE kelas = ?");
-                    $sql->bind_param("s", $selectedClass);
-                    } else {
-                        $sql = $koneksi->prepare("SELECT * FROM db_siswa");
-                        }
-                            
-                    $sql->execute();
-                    $result = $sql->get_result();
-                    while ($data = $result->fetch_assoc()) {
-                ?>
+            <?php while($data = $result->fetch_assoc()) { ?>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <?php echo $data['nokartu']; ?> 
