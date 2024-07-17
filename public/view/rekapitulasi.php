@@ -11,10 +11,10 @@ if (isset($_GET['tanggal'])) {
 // Filter absensi berdasarkan tanggal dan kelas
 if (isset($_GET['kelas']) && $_GET['kelas'] != '') {
     $kelas = $_GET['kelas'];
-    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ? AND b.kelas = ?");
+    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.status, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ? AND b.kelas = ?");
     $sql->bind_param("ss", $tanggal, $kelas);
 } else {
-    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ?");
+    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.status, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ?");
     $sql->bind_param("s", $tanggal);
 }
 $sql->execute();
@@ -79,6 +79,24 @@ $no = 0;
             Filter
         </button>
     </form>
+
+    <div class="flex justify-end mb-4">
+        <form method="get" action="export_excel.php" class="mr-2">
+            <input type="hidden" name="tanggal" value="<?php echo $selectedDate; ?>">
+            <input type="hidden" name="kelas" value="<?php echo $selectedClass; ?>">
+            <button type="submit" class="rounded-md bg-green-600 py-2 px-4 text-center text-white font-medium hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-500">
+                Export to Excel
+            </button>
+        </form>
+
+        <form method="get" action="export_pdf.php">
+            <input type="hidden" name="tanggal" value="<?php echo $selectedDate; ?>">
+            <input type="hidden" name="kelas" value="<?php echo $selectedClass; ?>">
+            <button type="submit" class="rounded-md bg-red-600 py-2 px-4 text-center text-white font-medium hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-500">
+                Export to PDF
+            </button>
+        </form>
+    </div>
 
     <!-- Table -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
