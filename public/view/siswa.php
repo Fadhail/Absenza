@@ -5,6 +5,17 @@ include "koneksi.php";
 $sql = $koneksi->prepare("SELECT * FROM db_siswa");
 $sql->execute();
 $result = $sql->get_result();
+
+// Mengambil data siswa dari database
+$kelas = isset($_GET['kelas']) ? $_GET['kelas'] : '';
+if ($kelas) {
+    $sql = $koneksi->prepare("SELECT * FROM db_siswa WHERE kelas = ?");
+    $sql->bind_param("s", $kelas);
+} else {
+    $sql = $koneksi->prepare("SELECT * FROM db_siswa");
+}
+$sql->execute();
+$result = $sql->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -66,11 +77,18 @@ $result = $sql->get_result();
                     KELAS
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    STATUS
+                </th>
+                <th scope="col" class="px-6 py-3">
                     ACTION
                 </th>
             </tr>
         </thead>
-            <?php while($data = $result->fetch_assoc()) { ?>
+        <?php while($data = $result->fetch_assoc()) { 
+                $rekap_query = mysqli_query($koneksi, "SELECT status FROM rekapitulasi WHERE nokartu = '{$data['nokartu']}' AND tanggal = CURDATE()");
+                $rekap_data = mysqli_fetch_array($rekap_query);
+                $status = isset($rekap_data['status']) ? $rekap_data['status'] : 'belum absen';
+            ?>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <?php echo $data['nokartu']; ?> 
@@ -83,6 +101,17 @@ $result = $sql->get_result();
                 </td>
                 <td class="px-6 py-4">
                     <?php echo $data['kelas']; ?>
+                </td>
+                <td class="px-6 py-4">
+                    <form method="post" action="ubah_status.php">
+                        <input type="hidden" name="nokartu" value="<?php echo $data['nokartu']; ?>">
+                        <select name="status" onchange="this.form.submit()" class="rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>  </option>
+                            <option value="hadir" <?php echo $status == 'hadir' ? 'selected' : ''; ?>>Hadir</option>
+                            <option value="sakit" <?php echo $status == 'sakit' ? 'selected' : ''; ?>>Sakit</option>
+                            <option value="izin" <?php echo $status == 'izin' ? 'selected' : ''; ?>>Izin</option>
+                        </select>
+                    </form>
                 </td>
                 <td class="px-6 py-4">
                             <a href="edit.php?id=<?php echo $data['id']; ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a> | 

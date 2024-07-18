@@ -13,10 +13,10 @@ $tanggal = isset($_GET['tanggal']) ? date('Y-m-d', strtotime($_GET['tanggal'])) 
 $kelas = isset($_GET['kelas']) && $_GET['kelas'] != '' ? $_GET['kelas'] : 'Semua Kelas';
 
 if ($kelas !== 'Semua Kelas') {
-    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ? AND b.kelas = ?");
+    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.status, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ? AND b.kelas = ?");
     $sql->bind_param("ss", $tanggal, $kelas);
 } else {
-    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ?");
+    $sql = $koneksi->prepare("SELECT b.nisn, b.nama, b.kelas, a.status, a.tanggal, a.jam_masuk, a.jam_pulang FROM rekapitulasi a INNER JOIN db_siswa b ON a.nokartu = b.nokartu WHERE a.tanggal = ?");
     $sql->bind_param("s", $tanggal);
 }
 
@@ -36,9 +36,10 @@ $sheet->setCellValue('A1', 'NO');
 $sheet->setCellValue('B1', 'NISN');
 $sheet->setCellValue('C1', 'NAMA');
 $sheet->setCellValue('D1', 'KELAS');
-$sheet->setCellValue('E1', 'TANGGAL');
-$sheet->setCellValue('F1', 'JAM MASUK');
-$sheet->setCellValue('G1', 'JAM PULANG');
+$sheet->setCellValue('E1', 'STATUS');
+$sheet->setCellValue('F1', 'TANGGAL');
+$sheet->setCellValue('G1', 'JAM MASUK');
+$sheet->setCellValue('H1', 'JAM PULANG');
 
 $row = 2;
 $no = 1;
@@ -47,19 +48,19 @@ while ($data = $result->fetch_assoc()) {
     $sheet->setCellValue('B' . $row, $data['nisn']);
     $sheet->setCellValue('C' . $row, $data['nama']);
     $sheet->setCellValue('D' . $row, $data['kelas']);
-    $sheet->setCellValue('E' . $row, $data['tanggal']);
-    $sheet->setCellValue('F' . $row, $data['jam_masuk']);
-    $sheet->setCellValue('G' . $row, $data['jam_pulang']);
+    $sheet->setCellValue('E' . $row, $data['status']);
+    $sheet->setCellValue('F' . $row, $data['tanggal']);
+    $sheet->setCellValue('G' . $row, $data['jam_masuk']);
+    $sheet->setCellValue('H' . $row, $data['jam_pulang']);
     $row++;
 }
 
 $writer = new Xlsx($spreadsheet);
 
-// Buat nama file
-$kelas_formatted = str_replace(' ', '_', $kelas); // Ganti spasi dengan underscore
+// Format nama file
+$kelas_formatted = str_replace(' ', '_', $kelas);
 $filename = 'PRESENSI_' . $kelas_formatted . '_' . $tanggal . '.xlsx';
 
-// Output to browser
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="' . $filename . '"');
 header('Cache-Control: max-age=0');

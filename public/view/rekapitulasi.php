@@ -113,7 +113,15 @@ $no = 0;
                     NAMA
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    KELAS
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    STATUS
+                </th>
+                <th scope="col" class="px-6 py-3">
                     TANGGAL
+                </th>
+                <th scope="col" class="px-6 py-3">
                 </th>
                 <th scope="col" class="px-6 py-3">
                     JAM MASUK
@@ -136,6 +144,12 @@ $no = 0;
                     </td>
                     <td class="px-6 py-4">
                         <?php echo isset($data['nama']) ? $data['nama'] : ''; ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo isset($data['kelas']) ? $data['kelas'] : ''; ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo isset($data['status']) ? $data['status'] : ''; ?>
                     </td>
                     <td class="px-6 py-4">
                         <?php echo isset($data['tanggal']) ? $data['tanggal'] : ''; ?>
